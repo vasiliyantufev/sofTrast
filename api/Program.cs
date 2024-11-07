@@ -6,6 +6,17 @@ using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Добавление CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200") // Замените на ваш фронтенд URL
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 // Добавьте сервисы в контейнер
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,15 +30,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Применение политики CORS
+app.UseCors("AllowSpecificOrigin"); // Убедитесь, что этот вызов не закомментирован
+
 app.UseHttpsRedirection();
 
 // Определение маршрута POST для обратной связи
 app.MapPost("/feedback", (FeedbackModel feedback) =>
 {
     // Выполните здесь валидацию, если необходимо
-    if (string.IsNullOrWhiteSpace(feedback.Name) ||
-        string.IsNullOrWhiteSpace(feedback.Email) ||
-        string.IsNullOrWhiteSpace(feedback.PhoneNumber) ||
+    if (string.IsNullOrWhiteSpace(feedback.Name) || 
+        string.IsNullOrWhiteSpace(feedback.Email) || 
+        string.IsNullOrWhiteSpace(feedback.Phone) || 
         string.IsNullOrWhiteSpace(feedback.Message))
     {
         return Results.BadRequest("Все поля обязательны для заполнения.");
@@ -68,4 +82,4 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 }
 
 // Модель данных для обратной связи
-record FeedbackModel(string Name, string Email, string PhoneNumber, string Message);
+record FeedbackModel(string Name, string Email, string Phone, string Message);
