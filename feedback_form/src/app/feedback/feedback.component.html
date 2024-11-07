@@ -43,6 +43,15 @@
         <label for="message">Комментарий:</label>
         <textarea id="message" formControlName="message"></textarea>
       </div>
+
+      <div class="form-field">
+        <!-- Добавляем капчу -->
+        <re-captcha 
+          [siteKey]="'6LeZXngqAAAAAL4WTBd8iEAfo0wj8GBMiLxp9X2_'"  
+          formControlName="recaptcha"
+          (resolved)="resolved($event)">
+        </re-captcha>
+      </div>
   
       <button type="submit">Отправить</button>
     </form>
