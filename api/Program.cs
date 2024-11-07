@@ -1,8 +1,4 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,19 +7,22 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", builder =>
     {
-        builder.WithOrigins("http://localhost:4200") // Замените на ваш фронтенд URL
+        builder.WithOrigins("http://localhost:4200")
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
 });
 
-// Добавьте сервисы в контейнер
+// Подключение к базе данных MSSQL
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Добавление сервисов Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Настройте конвейер HTTP-запросов
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -31,55 +30,42 @@ if (app.Environment.IsDevelopment())
 }
 
 // Применение политики CORS
-app.UseCors("AllowSpecificOrigin"); // Убедитесь, что этот вызов не закомментирован
-
+app.UseCors("AllowSpecificOrigin"); 
 app.UseHttpsRedirection();
 
 // Определение маршрута POST для обратной связи
-app.MapPost("/feedback", (FeedbackModel feedback) =>
+app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel feedback) =>
 {
-    // Выполните здесь валидацию, если необходимо
     if (string.IsNullOrWhiteSpace(feedback.Name) || 
         string.IsNullOrWhiteSpace(feedback.Email) || 
         string.IsNullOrWhiteSpace(feedback.Phone) || 
+        string.IsNullOrWhiteSpace(feedback.Subject) || 
         string.IsNullOrWhiteSpace(feedback.Message))
     {
         return Results.BadRequest("Все поля обязательны для заполнения.");
     }
 
+    // Создание нового отзыва
+    var review = new Review
+    {
+        Name = feedback.Name,
+        Email = feedback.Email,
+        Phone = feedback.Phone,
+        Subject = feedback.Subject,
+        Message = feedback.Message
+    };
+
+    // Добавление отзыва в базу данных
+    dbContext.Reviews.Add(review);
+    await dbContext.SaveChangesAsync();
+
     // Возвращаем сообщение об успешной отправке
-    return Results.Ok(new { Message = "Спасибо за ваш отзыв!" });
+    return Results.Ok(new { Message = "Спасибо за ваш отзыв, " + feedback.Name });
 })
 .WithName("PostFeedback")
 .WithOpenApi();
 
-// Остальной код
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 10).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-55, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
-
 // Модель данных для обратной связи
-record FeedbackModel(string Name, string Email, string Phone, string Message);
+public record FeedbackModel(string Name, string Email, string Phone, string Subject, string Message);
