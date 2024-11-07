@@ -19,6 +19,7 @@ export class FeedbackComponent implements OnInit {
     this.feedbackForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s\(\)-]{7,15}$/)]], // Валидация для номера телефона
       subject: ['support', Validators.required],
       message: ['', Validators.required],
     });

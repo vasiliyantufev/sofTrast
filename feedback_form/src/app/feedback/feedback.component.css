@@ -96,3 +96,12 @@ select {
 select:hover {
     border-color: #007bff; /* Цвет рамки при наведении */
 }
+
+.form-field input.ng-invalid.ng-touched {
+    border-color: red; /* Изменение цвета рамки при ошибке валидации */
+}
+
+.error {
+    color: red; /* Цвет текста для сообщений об ошибках */
+    font-size: 12px; /* Размер шрифта для сообщения об ошибке */
+}
