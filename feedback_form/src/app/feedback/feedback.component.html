@@ -1,7 +1,16 @@
 <div class="container">
-    <h1>Форма обратной связи</h1>
+    <h1>Форма обратной связи!</h1>
+    
+
+    <div *ngIf="successMessageVisible" class="success">
+      <p>Спасибо за ваш отзыв! Мы скоро свяжемся с вами.</p>
+    </div>
   
-    <form >
+    <div *ngIf="errorMessageVisible" class="error">
+      <p>Произошла ошибка при отправке. Попробуйте еще раз.</p>
+    </div>
+
+    <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
       <div class="form-field">
         <label for="name">Ваше имя:</label>
         <input id="name" formControlName="name" type="text" />
@@ -17,14 +26,6 @@
         <textarea id="message" formControlName="message"></textarea>
       </div>
   
-      <button type="submit" >Отправить</button>
+      <button type="submit">Отправить</button>
     </form>
-  
-    <div>
-      <p>Спасибо за ваш отзыв! Мы скоро свяжемся с вами.</p>
-    </div>
-  
-    <div>
-      <p>Произошла ошибка при отправке. Попробуйте еще раз.</p>
-    </div>
   </div>

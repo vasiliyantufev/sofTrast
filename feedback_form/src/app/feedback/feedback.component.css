@@ -1,87 +1,76 @@
-/* container */
+/* Общие стили для контейнера */
 .container {
-    max-width: 500px;
-    margin: 0 auto; /* Центрируем контейнер */
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Максимальная ширина контейнера */
+    margin: 0 auto; /* Центрирование контейнера */
+    padding: 20px; /* Отступы вокруг контейнера */
+    border: 1px solid #ccc; /* Легкая рамка */
+    border-radius: 8px; /* Закругление углов */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    background-color: #f9f9f9; /* Цвет фона */
 }
 
-/* Заголовок */
+/* Стили заголовка */
 .container h1 {
-    text-align: center;
-    color: #333;
+    text-align: center; /* Центрирование заголовка */
+    color: #333; /* Цвет текста заголовка */
 }
 
-/* Поля формы */
-.form-field {
-    margin-bottom: 20px;
-    width: 95%;
+/* Стили для сообщений об успехе и ошибках */
+.success, .error {
+    padding: 10px; /* Отступы вокруг сообщения */
+    margin: 10px 0; /* Отступ сверху и снизу сообщения */
+    border-radius: 4px; /* Закругление углов сообщения */
 }
 
-/* Подписи в полях */
-.form-field label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-}
-
-/* Ввод данных и текстовое поле */
-.form-field input[type="text"],
-.form-field input[type="email"],
-.form-field textarea {
-    width: 100%; /* Заполнение доступного пространства */
-    padding: 10px;
-    border: 1px solid #bbb;
-    border-radius: 4px;
-    font-size: 14px;
-    transition: border-color 0.3s; /* Эффект при наведении */
-}
-
-/* Эффект фокуса для полей ввода */
-.form-field input[type="text"]:focus,
-.form-field input[type="email"]:focus,
-.form-field textarea:focus {
-    border-color: #007BFF; /* Цвет рамки при фокусе */
-    outline: none; /* Убираем стандартное выделение */
-}
-
-/* Кнопка отправки */
-button {
-    width: 100%; /* Заполняем всю ширину */
-    padding: 10px;
-    background-color: #007BFF; /* Цвет кнопки */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer; /* Указатель при наведении */
-    transition: background-color 0.3s; /* Эффект при наведении */
-}
-
-/* Эффект наведения для кнопки */
-button:hover {
-    background-color: #0056b3; /* Более темный цвет при наведении */
-}
-
-/* Сообщения об успехе и ошибках */
-.container p {
-    text-align: center;
-    display: none; /* Скрываем по умолчанию */
-    margin-top: 20px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Сообщение об успехе (при необходимости добавьте класс) */
+/* Цвета сообщений */
 .success {
-    color: green;
+    background-color: #e0f7e0; /* Светло-зеленый фон */
+    color: #3c763d; /* Темно-зеленый текст */
+    border: 1px solid #d6e9c6; /* Рамка для успеха */
 }
 
-/* Сообщение об ошибке (при необходимости добавьте класс) */
 .error {
-    color: red;
+    background-color: #f8d7da; /* Светло-красный фон */
+    color: #721c24; /* Темно-красный текст */
+    border: 1px solid #f5c6cb; /* Рамка для ошибки */
+}
+
+/* Стили для формы */
+form {
+    display: flex; /* Использование flexbox для центрирования элементов */
+    flex-direction: column; /* Упорядочить элементы по вертикали */
+}
+
+/* Стили для полей формы */
+.form-field {
+    margin-bottom: 15px; /* Отступ между полями формы */
+}
+
+label {
+    margin-bottom: 5px; /* Отступ между меткой и полем */
+    font-weight: bold; /* Полужирный текст метки */
+}
+
+input, textarea {
+    width: 100%; /* Занять всю ширину контейнера */
+    padding: 10px; /* Отступы внутри полей */
+    border: 1px solid #ccc; /* Рамка поля */
+    border-radius: 4px; /* Закругление углов полей */
+    box-sizing: border-box; /* Учет ширины и отступов в размерах */
+}
+
+/* Стили для кнопки отправки */
+button {
+    padding: 10px 15px; /* Отступы выше и ниже, слева и справа у кнопки */
+    border: none; /* Без рамки */
+    border-radius: 4px; /* Закругление углов кнопки */
+    background-color: #007bff; /* Синий фон */
+    color: white; /* Белый текст */
+    cursor: pointer; /* Указатель при наведении на кнопку */
+    font-size: 16px; /* Размер шрифта */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+button:hover {
+    background-color: #0056b3; /* Более темный синий при наведении */
 }
