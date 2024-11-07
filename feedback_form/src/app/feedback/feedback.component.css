@@ -1,0 +1,87 @@
+/* container */
+.container {
+    max-width: 500px;
+    margin: 0 auto; /* Центрируем контейнер */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок */
+.container h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Поля формы */
+.form-field {
+    margin-bottom: 20px;
+    width: 95%;
+}
+
+/* Подписи в полях */
+.form-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Ввод данных и текстовое поле */
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field textarea {
+    width: 100%; /* Заполнение доступного пространства */
+    padding: 10px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s; /* Эффект при наведении */
+}
+
+/* Эффект фокуса для полей ввода */
+.form-field input[type="text"]:focus,
+.form-field input[type="email"]:focus,
+.form-field textarea:focus {
+    border-color: #007BFF; /* Цвет рамки при фокусе */
+    outline: none; /* Убираем стандартное выделение */
+}
+
+/* Кнопка отправки */
+button {
+    width: 100%; /* Заполняем всю ширину */
+    padding: 10px;
+    background-color: #007BFF; /* Цвет кнопки */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Эффект при наведении */
+}
+
+/* Эффект наведения для кнопки */
+button:hover {
+    background-color: #0056b3; /* Более темный цвет при наведении */
+}
+
+/* Сообщения об успехе и ошибках */
+.container p {
+    text-align: center;
+    display: none; /* Скрываем по умолчанию */
+    margin-top: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Сообщение об успехе (при необходимости добавьте класс) */
+.success {
+    color: green;
+}
+
+/* Сообщение об ошибке (при необходимости добавьте класс) */
+.error {
+    color: red;
+}
