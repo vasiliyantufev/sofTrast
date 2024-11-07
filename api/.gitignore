@@ -1,0 +1,44 @@
+# Ignore build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Rider project files
+.idea/
+
+# VS Code directories and files
+.vscode/
+
+# ASP.NET Core environment variables
+appsettings*.json
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer packaging
+*.vsto
+*.vsix
+
+# .NET Core global tools
+dotnet-tools.json
+
+# Windows Image file
+Thumbs.db
+
+# Mac System files
+.DS_Store
+
+# Linux file systems
+*~
