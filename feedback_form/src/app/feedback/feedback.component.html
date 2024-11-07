@@ -20,6 +20,16 @@
         <label for="email">Email:</label>
         <input id="email" formControlName="email" type="email" />
       </div>
+
+      <div class="form-field">
+        <label for="subject">Тема:</label>
+        <select id="subject" formControlName="subject">
+          <option value="support" selected>Техподдержка</option>
+          <option value="sales">Продажи</option>
+          <option value="other">Другое</option>
+          <option value="other_field">Ещё один пункт</option>
+        </select>
+      </div>
   
       <div class="form-field">
         <label for="message">Комментарий:</label>

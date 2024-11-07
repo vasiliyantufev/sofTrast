@@ -19,6 +19,7 @@ export class FeedbackComponent implements OnInit {
     this.feedbackForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      subject: ['support', Validators.required],
       message: ['', Validators.required],
     });
   }

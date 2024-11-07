@@ -74,3 +74,25 @@ button {
 button:hover {
     background-color: #0056b3; /* Более темный синий при наведении */
 }
+
+/* Стили для label */
+.form-field label {
+    margin-bottom: 5px; /* Отступ между меткой и полем */
+    font-weight: bold; /* Полужирный текст для метки */
+}
+
+/* Стили для элемента select */
+select {
+    width: 100%; /* Занять всю ширину контейнера */
+    padding: 10px; /* Отступы внутри поля */
+    border: 1px solid #ccc; /* Рамка вокруг поля */
+    border-radius: 4px; /* Закругление углов */
+    box-sizing: border-box; /* Учет ширины и отступов в размерах */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Курсор при наведении */
+}
+
+/* Эффект при наведении на элемент select */
+select:hover {
+    border-color: #007bff; /* Цвет рамки при наведении */
+}
