@@ -16,7 +16,8 @@ import { RecaptchaModule } from 'ng-recaptcha';  // Импортируем Recap
 export class FeedbackComponent implements OnInit {
   feedbackForm: FormGroup;
   successMessageVisible: boolean = false;
-  errorMessageVisible: boolean = false;
+  errorMessageVisible: boolean = false;  
+  formVisible: boolean = true; // 
 
   // Внедряем HttpClient через конструктор
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -56,9 +57,9 @@ export class FeedbackComponent implements OnInit {
           // Если отправка прошла успешно
           this.successMessageVisible = true;
           this.errorMessageVisible = false;
-
-          // Сброс формы после отправки
-          this.feedbackForm.reset();
+          
+          // Скрыть форму после отправки
+          this.formVisible = false;
         },
         error: (error) => {
           console.error('Error submitting feedback:', error);

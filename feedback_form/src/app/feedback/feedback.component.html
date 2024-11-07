@@ -1,5 +1,5 @@
 <div class="container">
-    <h1>Форма обратной связи!</h1>
+    <h1>Напишите нам</h1>
     
 
     <div *ngIf="successMessageVisible" class="success">
@@ -10,6 +10,7 @@
       <p>Произошла ошибка при отправке. Попробуйте еще раз.</p>
     </div>
 
+    <div *ngIf="formVisible">
     <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
       <div class="form-field">
         <label for="name">Ваше имя:</label>
@@ -17,12 +18,12 @@
       </div>
   
       <div class="form-field">
-        <label for="email">Email:</label>
+        <label for="email">Ваш Email:</label>
         <input id="email" formControlName="email" type="email" />
       </div>
   
       <div class="form-field">
-        <label for="phone">Телефон:</label>
+        <label for="phone">Ваш телефон:</label>
         <input id="phone" formControlName="phone" type="text" placeholder="+7 (___) ___-__-__" />
         <div *ngIf="feedbackForm.get('phone')?.invalid && feedbackForm.get('phone')?.touched" class="error">
           <p>Введите корректный номер телефона.</p>
@@ -40,7 +41,7 @@
       </div>
   
       <div class="form-field">
-        <label for="message">Комментарий:</label>
+        <label for="message">Ваше сообщение:</label>
         <textarea id="message" formControlName="message"></textarea>
       </div>
 
@@ -55,4 +56,5 @@
   
       <button type="submit">Отправить</button>
     </form>
+    </div>
   </div>
