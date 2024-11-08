@@ -56,7 +56,7 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
     };
 
     // Добавление отзыва в базу данных
-    dbContext.Reviews.Add(review);
+    dbContext.Add(review);
     await dbContext.SaveChangesAsync();
 
     // Возвращаем сообщение об успешной отправке
