@@ -15,9 +15,11 @@ import { RecaptchaModule } from 'ng-recaptcha';  // Импортируем Recap
 })
 export class FeedbackComponent implements OnInit {
   feedbackForm: FormGroup;
+  h1Visible: boolean = true;
   successMessageVisible: boolean = false;
   errorMessageVisible: boolean = false;  
   formVisible: boolean = true; // 
+  submittedFeedback: any = null; // Для хранения отправленного сообщения
 
   // Внедряем HttpClient через конструктор
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -25,7 +27,7 @@ export class FeedbackComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s\(\)-]{7,15}$/)]], // Валидация для номера телефона
-      subject: ['support', Validators.required],
+      topic: ['Техподдержка', Validators.required],
       message: ['', Validators.required],      
       recaptcha: ['', Validators.required] // Поле для токена reCAPTCHA
     });
@@ -54,10 +56,14 @@ export class FeedbackComponent implements OnInit {
         next: (response) => {
           console.log('Feedback submitted:', response);
 
+          // Сохраняем данные ответа для отображения
+          this.submittedFeedback = response;
+
           // Если отправка прошла успешно
           this.successMessageVisible = true;
           this.errorMessageVisible = false;
           
+          this.h1Visible = false;
           // Скрыть форму после отправки
           this.formVisible = false;
         },

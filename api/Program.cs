@@ -37,10 +37,10 @@ app.UseHttpsRedirection();
 // Ассоциативный массив (словарь) для Id_Topic
 Dictionary<string, int> topicDictionary = new Dictionary<string, int>
 {
-    { "support", 0 },
-    { "sales", 1 },
-    { "other", 2 },
-    { "other_field", 3 }
+    { "Техподдержка", 0 },
+    { "Продажи", 1 },
+    { "Другое", 2 },
+    { "Ещё один пункт", 3 }
 };
 
 // Определение маршрута POST для обратной связи
@@ -49,7 +49,7 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
     if (string.IsNullOrWhiteSpace(feedback.Name) || 
         string.IsNullOrWhiteSpace(feedback.Email) || 
         string.IsNullOrWhiteSpace(feedback.Phone) || 
-        string.IsNullOrWhiteSpace(feedback.Subject) || 
+        string.IsNullOrWhiteSpace(feedback.Topic) || 
         string.IsNullOrWhiteSpace(feedback.Message))
     {
         return Results.BadRequest("Все поля обязательны для заполнения.");
@@ -57,7 +57,7 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
 
     int IdTopic;
     // Получение значения из словаря по ключу
-    if (!topicDictionary.TryGetValue(feedback.Subject, out IdTopic))
+    if (!topicDictionary.TryGetValue(feedback.Topic, out IdTopic))
     {
         return Results.BadRequest("Неверный идентификатор темы.");
     }
@@ -99,7 +99,8 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
    //----------------------------------------------------------------- 
 
     // Возвращаем сообщение об успешной отправке
-    return Results.Ok(new { Message = "Спасибо за ваш отзыв, " + feedback.Name });
+    return Results.Ok(new { Name = feedback.Name, Email = feedback.Email, Phone = feedback.Phone, 
+                            Topic = feedback.Topic, Message = feedback.Message});
 })
 .WithName("PostFeedback")
 .WithOpenApi();
@@ -107,4 +108,4 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
 app.Run();
 
 // Модель данных для обратной связи
-public record FeedbackModel(string Name, string Email, string Phone, string Subject, string Message);
+public record FeedbackModel(string Name, string Email, string Phone, string Topic, string Message);
