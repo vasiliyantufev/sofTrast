@@ -34,7 +34,7 @@ app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 
 
-// Ассоциативный массив (словарь) для Id_Topic
+// Ассоциативный массив (словарь) для IdTopic
 Dictionary<string, int> topicDictionary = new Dictionary<string, int>
 {
     { "Техподдержка", 0 },
@@ -55,9 +55,9 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
         return Results.BadRequest("Все поля обязательны для заполнения.");
     }
 
-    int IdTopic;
+    int idTopicMsg;
     // Получение значения из словаря по ключу
-    if (!topicDictionary.TryGetValue(feedback.Topic, out IdTopic))
+    if (!topicDictionary.TryGetValue(feedback.Topic, out idTopicMsg))
     {
         return Results.BadRequest("Неверный идентификатор темы.");
     }
@@ -67,7 +67,7 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
         .Where(c => c.Email == feedback.Email && c.Phone == feedback.Phone)
         .FirstOrDefaultAsync();
 
-    int IdContactMsg;       
+    int idContactMsg;       
     if (chkContact == null)
     {
         // Создание нового контакта
@@ -81,16 +81,16 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
         dbContext.Contacts.Add(contact);
         // Сохраняем изменения в базе данных и получаем ID нового контакта
         await dbContext.SaveChangesAsync();
-        IdContactMsg = contact.Id;
+        idContactMsg = contact.Id;
     } else {
-        IdContactMsg = chkContact.Id;
+        idContactMsg = chkContact.Id;
     }
    //----------------------------------------------------------------- 
     // Создание нового сообщения
     var Message = new Message
     {
-        Id_contact = IdContactMsg,
-        Id_Topic = IdTopic,
+        Id_contact = idContactMsg,
+        Id_topic = idTopicMsg,
         Text = feedback.Message,
     };
     // Добавление сообщения в базу данных
@@ -99,8 +99,12 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
    //----------------------------------------------------------------- 
 
     // Возвращаем сообщение об успешной отправке
-    return Results.Ok(new { Name = feedback.Name, Email = feedback.Email, Phone = feedback.Phone, 
-                            Topic = feedback.Topic, Message = feedback.Message});
+    return Results.Ok(new {
+        feedback.Name,
+        feedback.Email,
+        feedback.Phone,
+        feedback.Topic,
+        feedback.Message});
 })
 .WithName("PostFeedback")
 .WithOpenApi();
