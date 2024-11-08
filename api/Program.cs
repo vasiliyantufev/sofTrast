@@ -33,6 +33,16 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowSpecificOrigin"); 
 app.UseHttpsRedirection();
 
+
+// Ассоциативный массив (словарь) для Id_Topic
+Dictionary<string, int> topicDictionary = new Dictionary<string, int>
+{
+    { "support", 0 },
+    { "sales", 1 },
+    { "other", 2 },
+    { "other_field", 3 }
+};
+
 // Определение маршрута POST для обратной связи
 app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel feedback) =>
 {
@@ -45,19 +55,48 @@ app.MapPost("/feedback", async (ApplicationDbContext dbContext, FeedbackModel fe
         return Results.BadRequest("Все поля обязательны для заполнения.");
     }
 
-    // Создание нового отзыва
-    var review = new Review
+    int IdTopic;
+    // Получение значения из словаря по ключу
+    if (!topicDictionary.TryGetValue(feedback.Subject, out IdTopic))
     {
-        Name = feedback.Name,
-        Email = feedback.Email,
-        Phone = feedback.Phone,
-        Subject = feedback.Subject,
-        Message = feedback.Message
-    };
+        return Results.BadRequest("Неверный идентификатор темы.");
+    }
+   //----------------------------------------------------------------- 
+    // Запрос к базе данных с использованием LINQ
+    var chkContact = await dbContext.Contacts
+        .Where(c => c.Email == feedback.Email && c.Phone == feedback.Phone)
+        .FirstOrDefaultAsync();
 
-    // Добавление отзыва в базу данных
-    dbContext.Add(review);
+    int IdContactMsg;       
+    if (chkContact == null)
+    {
+        // Создание нового контакта
+        var contact = new Contact
+        {
+            Name = feedback.Name,
+            Email = feedback.Email,
+            Phone = feedback.Phone,
+        };
+        // Добавление контакта в базу данных
+        dbContext.Contacts.Add(contact);
+        // Сохраняем изменения в базе данных и получаем ID нового контакта
+        await dbContext.SaveChangesAsync();
+        IdContactMsg = contact.Id;
+    } else {
+        IdContactMsg = chkContact.Id;
+    }
+   //----------------------------------------------------------------- 
+    // Создание нового сообщения
+    var Message = new Message
+    {
+        Id_contact = IdContactMsg,
+        Id_Topic = IdTopic,
+        Text = feedback.Message,
+    };
+    // Добавление сообщения в базу данных
+    dbContext.Messages.Add(Message);
     await dbContext.SaveChangesAsync();
+   //----------------------------------------------------------------- 
 
     // Возвращаем сообщение об успешной отправке
     return Results.Ok(new { Message = "Спасибо за ваш отзыв, " + feedback.Name });
